@@ -69,7 +69,7 @@ int main(int argc, char *argv[]){
 	}
 	double total_data_written = (double)chunks * (double)chunk_size;
 	printf("chunk_size:%llu\nchunks:%llu\ntotal data written:%llu\n", chunk_size, chunks, chunk_size*chunks);
-	if(write_result != 0)
+	if(write_result != 0){
 		printf("\033[94mWrite test:\033[0m\nTotal time: %fs\nTB/s: %f\nGB/s: %f\nMB/s: %f\nKB/s: %f\n", 
 			write_result,
 			(total_data_written/write_result)/1000000000000.0,
@@ -77,14 +77,16 @@ int main(int argc, char *argv[]){
 			(total_data_written/write_result)/1000000.0,
 			(total_data_written/write_result)/1000.0
 		);
-	if(read_result != 0)
-				printf("\033[94mRead test:\033[0m\nTotal time: %fs\nTB/s: %f\nGB/s: %f\nMB/s: %f\nKB/s: %f\n", 
+	}
+	if(read_result != 0){
+		printf("\033[94mRead test:\033[0m\nTotal time: %fs\nTB/s: %f\nGB/s: %f\nMB/s: %f\nKB/s: %f\n", 
 			read_result,
 			(total_data_written/read_result)/1000000000000.0,
 			(total_data_written/read_result)/1000000000.0,
 			(total_data_written/read_result)/1000000.0,
 			(total_data_written/read_result)/1000.0
 		);
+	}
 }
 
 void print_usage(){
