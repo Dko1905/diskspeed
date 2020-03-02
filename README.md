@@ -8,7 +8,7 @@ The program only uses standard c + POSIX.
 ## Todo
 -   [x] Fix the readme, it's really old.
 -   [ ] Find min c & POSIX version. (No need to compile with c11 when it can be compiled with something earlier. (More compatibility)
--   [ ] Create -h (help) in the program.
+-   [x] Create -h (help) in the program.
 -   [ ] Show documentation in readme
 -   [ ] Create man page
 -   [ ] Create snap package

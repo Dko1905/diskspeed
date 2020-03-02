@@ -90,5 +90,12 @@ int main(int argc, char *argv[]){
 }
 
 void print_usage(){
-	printf("Usage: diskspeed -o <output filename> -m <filesize in bytes>\n");
+	printf("Usage: diskspeed <options>\n");
+	printf("\t-h\tShows help\n");
+	printf("\t-o\tOutput filename\n");
+	printf("\t-d\tDelete file after test(s)\n");
+	printf("\t-r\tOnly read test\n");
+	printf("\t-w\tOnly write test\n");
+	printf("\t-v\tVerbose\n");
+	printf("\t-b\tBytes -b <chunksize>:<chunks>\n");
 }
