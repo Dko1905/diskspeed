@@ -19,7 +19,7 @@ int main(int argc, char *argv[]){
 	unsigned long long chunk_size = 1000;
 	unsigned long long chunks = 1;
 
-	while((option = getopt(argc, argv, "o:b:hdv")) != -1){
+	while((option = getopt(argc, argv, "o:b:hdvrw")) != -1){
 		switch(option){
 			case 'h': // help
 				print_usage();
@@ -60,9 +60,9 @@ int main(int argc, char *argv[]){
 	}
 	double read_result = 0, write_result = 0;
 	if(read_flag && !write_flag)
-		write_result = write_test("test.bin", chunk_size*chunks, 1, verbose, delete_flag);
+		read_result = read_test("test.bin", chunk_size*chunks, 1, verbose, delete_flag);
 	else if(write_flag && !read_flag)
-		read_result = read_test("test.bin", chunk_size, chunks, verbose, delete_flag);
+		write_result = write_test("test.bin", chunk_size, chunks, verbose, delete_flag);
 	else if(write_flag && read_flag){
 		write_result = write_test("test.bin", chunk_size, chunks, verbose, 0);
 		read_result = read_test("test.bin", chunk_size, chunks, verbose, delete_flag);
