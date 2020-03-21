@@ -60,7 +60,7 @@ int main(int argc, char *argv[]){
 	}
 	double read_result = 0, write_result = 0;
 	if(read_flag && !write_flag)
-		read_result = read_test("test.bin", chunk_size*chunks, 1, verbose, delete_flag);
+		read_result = read_test("test.bin", chunk_size, chunks, verbose, delete_flag);
 	else if(write_flag && !read_flag)
 		write_result = write_test("test.bin", chunk_size, chunks, verbose, delete_flag);
 	else if(write_flag && read_flag){
