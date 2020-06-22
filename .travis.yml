@@ -1,4 +1,6 @@
 language: c
 compiler: gcc
 install: make cmake
-script: cmake . && make
+script:
+  - cmake .
+  - make
