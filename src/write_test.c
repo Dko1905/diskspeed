@@ -42,7 +42,7 @@ int write_test(
 
 	if(random_flag == 1){
 		fill_with_random(chunk, chunk_size);
-		LOG("Filled chunk with random data\n");
+		LOG("Filled chunk with random bytes\n");
 	}
 	
 	struct timespec start;
