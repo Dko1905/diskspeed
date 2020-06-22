@@ -11,4 +11,6 @@ endif()
 # Setup project name
 project(Diskspeed VERSION 1.0)
 
-add_executable(Diskspeed src/main.c)
+add_executable(Diskspeed src/main.c src/write_test.c)
+
+#add_executable(Diskspeed src/write_test.c)
