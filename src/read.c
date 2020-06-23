@@ -41,19 +41,19 @@ int read_test(
 	struct timespec end;
 	int start_result, end_result;
 
-	LOG("Start\n");
+	LOG("Started read test\n");
 
 	start_result = clock_gettime(CLOCK_REALTIME, &start); // Start time
 
 	int rr;
 	for(size_t n = 0; n < chunks; n++){
 		rr = read(fd, chunk, chunk_size);
-		ERR_CHECK(rr < 1, "Failed to read");  //TODO Check if it should be `< 1` or `< 0`
+		ERR_CHECK(rr < 0, "Failed to read");
 	}
 
 	end_result = clock_gettime(CLOCK_REALTIME, &end);
 	ERR_CHECK(end_result < 0 || start_result < 0, "Time messurement failed");
-	LOG("Stop\n");
+	LOG("Stoped read test\n");
 
 	double startd = (double)start.tv_sec + ((double)start.tv_nsec * (double)0.000000001); // I hope the compiler is good here
 	double endd = (double)end.tv_sec + ((double)end.tv_nsec * (double)0.000000001);
