@@ -49,7 +49,7 @@ int write_test(
 	struct timespec end;
 	int start_result, end_result;
 
-	LOG("Start\n")
+	LOG("Started write test\n")
 	start_result = clock_gettime(CLOCK_REALTIME, &start); // Start time
 
 	int wr;
@@ -60,7 +60,7 @@ int write_test(
 
 	end_result = clock_gettime(CLOCK_REALTIME, &end);
 	ERR_CHECK(end_result < 0 || start_result < 0, "Time messurement failed");
-	LOG("Stop\n");
+	LOG("Stoped write test\n");
 
 	double startd = (double)start.tv_sec + ((double)start.tv_nsec * (double)0.000000001); // I hope the compiler is good here
 	double endd = (double)end.tv_sec + ((double)end.tv_nsec * (double)0.000000001);
