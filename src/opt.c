@@ -5,6 +5,9 @@
 #include <errno.h> // For errno
 #include <string.h> // For strncpy
 
+#include "write.h"
+#include "read.h"
+
 #define ERRBUFFERSIZE 255
 #define ERR_CHECK(exp, ...) \
 	if(exp){ \
@@ -83,9 +86,10 @@ int parse_and_run(int argc, char* argv[]){
 		}
 	}
 
-	printf("Verbose flag is %d\n", verbose_flag);
-	printf("Output is %s\n", output_filename);
-	printf("Bytes data %llu %llu\n", chunk_size, chunk_amount);
+	double readresult = 0, writeresult = 0;
+	if(write_flag){
+		
+	}
 
 	free(output_filename);
 	return 0;
