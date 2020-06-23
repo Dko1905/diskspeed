@@ -153,7 +153,7 @@ int parse_and_run(int argc, char* argv[]){
 		LOG("Write test done\n");
 	}
 	if(read_flag){
-		fseek(fd, 0, SEEK_SET); // Seek to start to read
+		lseek(fd, 0, SEEK_SET); // Seek to start to read
 		int rtr = read_test(fd, chunk_size, chunk_amount, verbose_flag, &read_result);
 		ERR_CHECK(rtr != 0, "Failed to do read_test");
 		LOG("Read test done\n");
