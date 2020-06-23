@@ -207,5 +207,12 @@ int parse_and_run(int argc, char* argv[]){
 #endif
 
 void print_usage(){
-	printf("Usage: diskspeed -wrv -o <output file> -b <chunk size (bytes)>:<amount of chunks>\n");
+	printf("Usage: diskspeed --verbose --output test.bin --delete --byte 1000:1000 \n");
+	printf("-v --verbose\n\tWrite extra infomation to the terminal.\n");
+	printf("-r --read\n\tOnly do the read test, there is no check for file size.\n");
+	printf("-d --delete\n\tDelete the file afterwords.\n");
+	printf("-o --output\n\tOutput file.\n");
+	printf("-b --byte\n\tSpecifies the chunk size and the amount <chunk size, chunk amount>, for example 1000:10.\n");
+	printf("-h --delete\n\tPrints this help message.\n");
+	printf("-n --no-random\n\tDo not fill chunk with random data.\n");
 }
