@@ -7,7 +7,7 @@
 #include <errno.h> // For errno
 #include <stdlib.h> // For malloc
 #include <time.h> // for clock_gettime & timespec struct
-#include "read_test.h"
+#include "write.h"
 
 #define LOG(...) \
 	if(verbose_flag == 1){ \
@@ -24,11 +24,14 @@
 		return errno; \
 	}
 
-int read_test(
+void fill_with_random(char* buffer, size_t size);
+
+int write_test(
 	int fd,
 	size_t chunk_size,
 	size_t chunks,
 	int verbose_flag,
+	int random_flag,
 	double *result
 ){
 	char* chunk;
@@ -37,16 +40,21 @@ int read_test(
 	ERR_CHECK(chunk == NULL, "malloc failed");
 	LOG("Allocated %d bytes chunk\n", chunk_size);
 
+	if(random_flag == 1){
+		fill_with_random(chunk, chunk_size);
+		LOG("Filled chunk with random bytes\n");
+	}
+	
 	struct timespec start;
 	struct timespec end;
 	int start_result, end_result;
 
 	start_result = clock_gettime(CLOCK_REALTIME, &start); // Start time
 
-	int rr;
+	int wr;
 	for(size_t n = 0; n < chunks; n++){
-		rr = read(fd, chunk, chunk_size);
-		ERR_CHECK(rr < 1, "Failed to read");  //TODO Check if it should be `< 1` or `< 0`
+		wr = write(fd, chunk, chunk_size);
+		ERR_CHECK(wr < 1, "Failed to write"); //TODO Check if it should be `< 1` or `< 0`
 	}
 
 	end_result = clock_gettime(CLOCK_REALTIME, &end);
@@ -62,4 +70,10 @@ int read_test(
 	LOG("Freed %d bytes chunk\n", chunk_size);
 
 	return 0;
+}
+
+void fill_with_random(char* buffer, size_t size){
+	for(size_t n = 0; n < size; n++){
+		buffer[n] = (char)rand();
+	}
 }

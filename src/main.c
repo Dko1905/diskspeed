@@ -2,8 +2,8 @@
 #include <fcntl.h> // for file operations in POSIX
 #include <unistd.h>
 #include <sys/stat.h> // For permissions on file
-#include "write_test.h"
-#include "read_test.h"
+#include "write.h"
+#include "read.h"
 
 int main(int argc, char* argv[]){
 	int fd1 = open("test.bin", O_CREAT | O_RDWR | O_SYNC, 0600);
