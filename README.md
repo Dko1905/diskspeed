@@ -1,7 +1,7 @@
 # Diskspeed
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7e95d422a4cc49f2b5ed131e81483cc9)](https://app.codacy.com/manual/Dko1905/diskspeed/dashboard)
-[![Build Badge](https://travis-ci.org/Dko1905/diskspeed.svg?branch=master)](https://travis-ci.org/Dko1905/diskspeed)
+[![Build Badge](https://api.travis-ci.org/Dko1905/diskspeed.svg?branch=new)](https://travis-ci.org/Dko1905/diskspeed)
 
 A simple utility to test read and write speed, without cache.
 The program only uses standard c + POSIX.
