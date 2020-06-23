@@ -1,19 +1,7 @@
-# Output folder
-build/
-
-# Object files
+# Make
 *.o
-*.ko
-*.obj
-*.elf
 
-# Linker output
-*.ilk
-*.map
-*.exp
+# Bin
 
-# Precompiled Headers
-*.gch
-*.pch
-
-*.bin
+dist/*
+test.bin

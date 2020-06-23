@@ -1,9 +1,10 @@
+#include <stddef.h> // For size_t
 
-
-double write_test(
-	char* filename,
-	unsigned long long chunk_size,
-	unsigned long long chunks,
-	int verbose,
-	int dflag // delete file after test
+int write_test(
+	int fd,
+	size_t chunk_size,
+	size_t chunks,
+	int verbose_flag,
+	int random_flag,
+	double *result
 );

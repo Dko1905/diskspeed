@@ -1,9 +1,9 @@
+#include <stddef.h> // For size_t
 
-
-double read_test(
-	char* filename,
-	unsigned long long chunk_size,
-	unsigned long long chunks,
-	int verbose,
-	int dflag // delete file after test
+int read_test(
+	int fd,
+	size_t chunk_size,
+	size_t chunks,
+	int verbose_flag,
+	double *result
 );

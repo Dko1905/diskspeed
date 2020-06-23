@@ -1,87 +1,67 @@
 #define _POSIX_C_SOURCE 199309L
+//  |
+//  | Needed for CLOCK_REALTIME to work
 
-#include <stdio.h>
-#include <fcntl.h> // for file operations in POSIX
-#include <stdlib.h> // for exit()
-#include <unistd.h> // for close()
-#include <sys/stat.h> // for fstat() (size of file)
-
+#include <unistd.h> // For write(2)
+#include <stdio.h> // Printf
+#include <errno.h> // For errno
+#include <stdlib.h> // For malloc
 #include <time.h> // for clock_gettime & timespec struct
-
 #include "read.h"
 
-double read_test(
-	char* filename,
-	unsigned long long chunk_size,
-	unsigned long long chunks,
-	int verbose,
-	int dflag // delete file after test
+#define LOG(...) \
+	if(verbose_flag == 1){ \
+		printf("[INFO] "); \
+		printf(__VA_ARGS__); \
+	}
+
+#define ERRBUFFERSIZE 255
+#define ERR_CHECK(exp, ...) \
+	if(exp){ \
+		char str[ERRBUFFERSIZE]; \
+		snprintf(str, ERRBUFFERSIZE, __VA_ARGS__); \
+		perror(str); \
+		return errno; \
+	}
+
+int read_test(
+	int fd,
+	size_t chunk_size,
+	size_t chunks,
+	int verbose_flag,
+	double *result
 ){
-	int file_handler = open(filename, O_SYNC | O_RDONLY);
+	char* chunk;
 
-	if(file_handler < 0){
-		perror("open() failed");
-		exit(1);
-	}
-	else if(verbose){
-		printf("open() finished\n");
-	}
-	
-	struct stat st;
-	if(fstat(file_handler, &st) == -1){
-		perror("fstat() failed");
-		exit(1);
-	}
-	else if(verbose){
-		printf("fstat() finished\n");
-	}
-	if(st.st_size < chunk_size*chunks){
-		fprintf(stderr, "input file is too small\n");
-		exit(2);
-	}
-
-	char* chunk = (char*)malloc(chunk_size);
-	if(chunk == NULL){
-		perror("malloc() failed");
-		exit(1);
-	}
+	chunk = (char*)malloc(chunk_size); // Allocate only one chunk and write the same chunk.
+	ERR_CHECK(chunk == NULL, "malloc failed");
+	LOG("Allocated %lu bytes chunk\n", chunk_size);
 
 	struct timespec start;
 	struct timespec end;
 	int start_result, end_result;
 
-	start_result = clock_gettime(CLOCK_REALTIME, &start);
+	LOG("Started read test\n");
 
-	for(int n = 1; n <= chunks; n++){
-		if(read(file_handler, chunk, chunk_size) == -1){
-			perror("read() failed");
-			exit(1);
-		}
+	start_result = clock_gettime(CLOCK_REALTIME, &start); // Start time
+
+	int rr;
+	for(size_t n = 0; n < chunks; n++){
+		rr = read(fd, chunk, chunk_size);
+		ERR_CHECK(rr < 0, "Failed to read");
 	}
-	
+
 	end_result = clock_gettime(CLOCK_REALTIME, &end);
-	if(end_result == -1 || start_result == -1){
-		perror("clock_gettime() failed");
-		exit(1);
-	}
-	else if(verbose){
-		printf("read() finished\n");
-	}
-	double start_double = 1.0*start.tv_sec+1e-9*start.tv_nsec;
-	double end_double = 1.0*end.tv_sec+1e-9*end.tv_nsec;
-	double dif_double = end_double-start_double;
+	ERR_CHECK(end_result < 0 || start_result < 0, "Time messurement failed");
+	LOG("Stoped read test\n");
 
-	close(file_handler);
+	double startd = (double)start.tv_sec + ((double)start.tv_nsec * (double)0.000000001); // I hope the compiler is good here
+	double endd = (double)end.tv_sec + ((double)end.tv_nsec * (double)0.000000001);
+
+	*result = endd - startd;
+
 	free(chunk);
-	if(dflag){
-		if(remove(filename) == -1){
-			perror("Failed to remove file");
-			exit(1);
-		}
-		else if(verbose){
-			printf("removed file\n");
-		}
-	}
+	LOG("Freed %lu bytes chunk\n", chunk_size);
 
-	return dif_double;
+	return 0;
 }
