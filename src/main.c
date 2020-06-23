@@ -4,8 +4,15 @@
 #include <sys/stat.h> // For permissions on file
 #include "write.h"
 #include "read.h"
+#include "opt.h"
+
+int test1(int argc, char* argv[]);
 
 int main(int argc, char* argv[]){
+	return parse_and_run(argc, argv);
+}
+
+int test1(int argc, char* argv[]){
 	int fd1 = open("test.bin", O_CREAT | O_RDWR | O_SYNC, 0600);
 	if(fd1 < 0){
 		perror("Failed to open/create file");
@@ -37,4 +44,6 @@ int main(int argc, char* argv[]){
 	printf("Read result is %lfs. \n", b);
 
 	close(fd1);
+
+	return 0;
 }
