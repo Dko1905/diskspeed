@@ -1,5 +1,3 @@
-#pragma GCC diagnostic ignored "-Wmultichar"
-
 #include <unistd.h> // For something //TODO check this
 #include <stdio.h> // printf
 #include <stdlib.h> // Standard things
@@ -58,7 +56,7 @@ static struct option long_options[] = {
 	{"output", required_argument, NULL, 'o'},
 	{"byte", required_argument, NULL, 'b'},
 	{"help", no_argument, NULL, 'h'},
-	{"no-random", no_argument, NULL, 'nr'}
+	{"no-random", no_argument, NULL, 'n'}
 };
 
 int parse_and_run(int argc, char* argv[]){
@@ -71,14 +69,14 @@ int parse_and_run(int argc, char* argv[]){
 	int read_flag = 0;
 	int delete_flag = 0;
 	size_t chunk_size = -1, chunk_amount = -1;
-	int random_flag = 0;
+	int random_flag = 1;
 
 	char* output_filename = malloc(STRMAX);
 	output_filename[STRMAX] = '\0'; // For security reasons
 	ERR_CHECK(output_filename == NULL, "Failed to alocate buffers for output_filename\n");
 
 	while(
-		(opt = getopt_long(argc, argv, "vwrdo:b:", long_options, &long_index)) != -1
+		(opt = getopt_long(argc, argv, "vwrdo:b:n", long_options, &long_index)) != -1
 	){
 		switch(opt){
 			case 'v':
@@ -105,8 +103,9 @@ int parse_and_run(int argc, char* argv[]){
 				print_usage();
 				return 0;
 				break;// This is not needed
-			case 'nr':
-				random_flag = 1;
+			case 'n':
+				random_flag = 0;
+				break;
 			default:
 				//print_usage();
 				break;
@@ -147,6 +146,13 @@ int parse_and_run(int argc, char* argv[]){
 
 	if(write_flag){
 		int wtr = write_test(fd, chunk_size, chunk_amount, verbose_flag, random_flag, &result);
+		ERR_CHECK(wtr != 0, "Failed to do write_test");
+		LOG("write_test done\n");
+	}
+	if(read_flag){
+		int rtr = read_test(fd, chunk_size, chunk_amount, verbose_flag, &result);
+		ERR_CHECK(rtr != 0, "Failed to do read_test");
+		LOG("read_test done\n");
 	}
 
 	free(output_filename);
