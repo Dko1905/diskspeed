@@ -8,7 +8,7 @@
 			"name": "(gdb) Launch",
 			"type": "cppdbg",
 			"request": "launch",
-			"program": "${workspaceFolder}/dist/Diskspeed",
+			"program": "${workspaceFolder}/dist/diskspeed",
 			"args": [],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
