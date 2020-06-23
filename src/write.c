@@ -1,5 +1,5 @@
 #define _POSIX_C_SOURCE 199309L
-//  /\
+//  |
 //  | Needed for CLOCK_REALTIME to work
 
 #include <unistd.h> // For write(2)
@@ -38,7 +38,7 @@ int write_test(
 
 	chunk = (char*)malloc(chunk_size); // Allocate only one chunk and write the same chunk.
 	ERR_CHECK(chunk == NULL, "malloc failed");
-	LOG("Allocated %d bytes chunk\n", chunk_size);
+	LOG("Allocated %lu bytes chunk\n", chunk_size);
 
 	if(random_flag == 1){
 		fill_with_random(chunk, chunk_size);
@@ -67,7 +67,7 @@ int write_test(
 	*result = endd - startd;
 
 	free(chunk);
-	LOG("Freed %d bytes chunk\n", chunk_size);
+	LOG("Freed %lu bytes chunk\n", chunk_size);
 
 	return 0;
 }

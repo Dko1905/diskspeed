@@ -1,5 +1,5 @@
 #define _POSIX_C_SOURCE 199309L
-//  /\
+//  |
 //  | Needed for CLOCK_REALTIME to work
 
 #include <unistd.h> // For write(2)
@@ -35,7 +35,7 @@ int read_test(
 
 	chunk = (char*)malloc(chunk_size); // Allocate only one chunk and write the same chunk.
 	ERR_CHECK(chunk == NULL, "malloc failed");
-	LOG("Allocated %d bytes chunk\n", chunk_size);
+	LOG("Allocated %lu bytes chunk\n", chunk_size);
 
 	struct timespec start;
 	struct timespec end;
@@ -59,7 +59,7 @@ int read_test(
 	*result = endd - startd;
 
 	free(chunk);
-	LOG("Freed %d bytes chunk\n", chunk_size);
+	LOG("Freed %lu bytes chunk\n", chunk_size);
 
 	return 0;
 }
