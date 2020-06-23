@@ -1,3 +1,5 @@
+#pragma GCC diagnostic ignored "-Wmultichar"
+
 #include <unistd.h> // For something //TODO check this
 #include <stdio.h> // printf
 #include <stdlib.h> // Standard things
@@ -55,7 +57,8 @@ static struct option long_options[] = {
 	{"delete", no_argument, NULL, 'd'},
 	{"output", required_argument, NULL, 'o'},
 	{"byte", required_argument, NULL, 'b'},
-	{"help", no_argument, NULL, 'h'}
+	{"help", no_argument, NULL, 'h'},
+	{"no-random", no_argument, NULL, 'nr'}
 };
 
 int parse_and_run(int argc, char* argv[]){
@@ -67,9 +70,11 @@ int parse_and_run(int argc, char* argv[]){
 	int write_flag = 0;
 	int read_flag = 0;
 	int delete_flag = 0;
+	size_t chunk_size = -1, chunk_amount = -1;
+	int random_flag = 0;
+
 	char* output_filename = malloc(STRMAX);
 	output_filename[STRMAX] = '\0'; // For security reasons
-	size_t chunk_size = -1, chunk_amount = -1;
 	ERR_CHECK(output_filename == NULL, "Failed to alocate buffers for output_filename\n");
 
 	while(
@@ -100,10 +105,18 @@ int parse_and_run(int argc, char* argv[]){
 				print_usage();
 				return 0;
 				break;// This is not needed
+			case 'nr':
+				random_flag = 1;
 			default:
 				//print_usage();
 				break;
 		}
+	}
+
+	if(chunk_amount < 0 || chunk_size < 0){
+		ERR("Invalid usage\n");
+		print_usage();
+		return 1;
 	}
 
 	/*
@@ -129,6 +142,12 @@ int parse_and_run(int argc, char* argv[]){
 
 	int cr = close(fd);
 	ERR_CHECK(cr < 0, "Failed to close %s", output_filename);
+
+	double result = -1;
+
+	if(write_flag){
+		int wtr = write_test(fd, chunk_size, chunk_amount, verbose_flag, random_flag, &result);
+	}
 
 	free(output_filename);
 	return 0;
