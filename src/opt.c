@@ -117,14 +117,18 @@ int parse_and_run(int argc, char* argv[]){
 		print_usage();
 		return 1;
 	}
+	if(!read_flag && !write_flag){
+		read_flag = 1;
+		write_flag = 1;
+	}
 
 	/*
 	TODO Setup opening file and read/write tests
 	*/
 
 	// File open section
-	int fd = creat(output_filename, O_EXCL | S_IRUSR | S_IWUSR);
-	if(fd < 0){
+	int fd2 = creat(output_filename, O_EXCL | S_IRUSR | S_IWUSR);
+	if(fd2 < 0){
 		if(errno == EEXIST){
 			LOG("Created file successfully\n");
 		}
@@ -132,27 +136,49 @@ int parse_and_run(int argc, char* argv[]){
 			ERR_CHECK(1==1, "Failed to create file");
 		}
 	}
-	close(fd);
-	fd = open(output_filename, O_TRUNC | O_SYNC | O_DIRECT);
+	int cr = close(fd2);
+	if(cr < 0){
+		perror("Failed to close file");
+	}
+	int fd = open(output_filename, O_TRUNC | O_SYNC | O_RDWR);
 	ERR_CHECK(fd < 0, "Failed to open %s", output_filename);
-
 
 	LOG("Opened %s\n", output_filename);
 
-	int cr = close(fd);
-	ERR_CHECK(cr < 0, "Failed to close %s", output_filename);
-
-	double result = -1;
+	double write_result = -1, read_result = -1;
 
 	if(write_flag){
-		int wtr = write_test(fd, chunk_size, chunk_amount, verbose_flag, random_flag, &result);
+		int wtr = write_test(fd, chunk_size, chunk_amount, verbose_flag, random_flag, &write_result);
 		ERR_CHECK(wtr != 0, "Failed to do write_test");
-		LOG("write_test done\n");
+		LOG("Write test done\n");
 	}
 	if(read_flag){
-		int rtr = read_test(fd, chunk_size, chunk_amount, verbose_flag, &result);
+		int rtr = read_test(fd, chunk_size, chunk_amount, verbose_flag, &read_result);
 		ERR_CHECK(rtr != 0, "Failed to do read_test");
-		LOG("read_test done\n");
+		LOG("Read test done\n");
+	}
+	cr = close(fd);
+	LOG("Closed %s\n", output_filename);
+	ERR_CHECK(cr < 0, "Failed to close %s", output_filename);
+
+	double total_data_written = (double)chunk_size * (double)chunk_amount;
+	if(write_flag){
+		printf("\033[94mWrite test:\033[0m\nTotal time: %fs\nTB/s: %f\nGB/s: %f\nMB/s: %f\nKB/s: %f\n", 
+			write_result,
+			(total_data_written/write_result)/1000000000000.0,
+			(total_data_written/write_result)/1000000000.0,
+			(total_data_written/write_result)/1000000.0,
+			(total_data_written/write_result)/1000.0
+		);
+	}
+	if(read_flag){
+		printf("\033[94mRead test:\033[0m\nTotal time: %fs\nTB/s: %f\nGB/s: %f\nMB/s: %f\nKB/s: %f\n", 
+			read_result,
+			(total_data_written/read_result)/1000000000000.0,
+			(total_data_written/read_result)/1000000000.0,
+			(total_data_written/read_result)/1000000.0,
+			(total_data_written/read_result)/1000.0
+		);
 	}
 
 	free(output_filename);
