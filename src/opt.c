@@ -86,10 +86,9 @@ int parse_and_run(int argc, char* argv[]){
 		}
 	}
 
-	double readresult = 0, writeresult = 0;
-	if(write_flag){
-		
-	}
+	/*
+	TODO Setup opening file and read/write tests
+	*/
 
 	free(output_filename);
 	return 0;
