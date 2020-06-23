@@ -50,8 +50,8 @@ int parse_and_run(int argc, char* argv[]){
 	int read_flag = 0;
 	int delete_flag = 0;
 	char* output_filename = malloc(STRMAX);
-	char* byte_data = malloc(STRMAX);
-	ERR_CHECK(output_filename == NULL || byte_data == NULL, "Failed to alocate buffers for `output_filename` or `byte_data`\n");
+	size_t chunk_size = -1, chunk_amount = -1;
+	ERR_CHECK(output_filename == NULL, "Failed to alocate buffers for output_filename\n");
 
 	while(
 		(opt = getopt_long(argc, argv, "vwrdo:b:", long_options, &long_index)) != -1
@@ -73,10 +73,10 @@ int parse_and_run(int argc, char* argv[]){
 				strncpy(output_filename, optarg, STRMAX-1);
 				output_filename[STRMAX] = '\0'; //TODO check if I need to manually null terminate this string
 				break;
-			case 'b':
-				strncpy(output_filename, optarg, STRMAX-1);
-				output_filename[STRMAX] = '\0'; //TODO check if I need to manually null terminate this string
-				byte_data = optarg;
+			case 'b': ; // Fix bad c standard
+				int sr = sscanf(optarg, "%llu:%llu", &chunk_size, &chunk_amount);
+				ERR_CHECK(sr < 2, "sscanf failed\n");
+				break;
 			default:
 				//print_usage();
 				break;
@@ -85,9 +85,9 @@ int parse_and_run(int argc, char* argv[]){
 
 	printf("Verbose flag is %d\n", verbose_flag);
 	printf("Output is %s\n", output_filename);
+	printf("Bytes data %llu %llu\n", chunk_size, chunk_amount);
 
 	free(output_filename);
-	free(byte_data);
 	return 0;
 }
 
