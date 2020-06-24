@@ -36,7 +36,7 @@
 void print_usage();
 
 
-#ifdef __gnu_linux2__
+#ifdef __gnu_linux__
 #define __USE_GNU
 
 #include <fcntl.h> // For open() 
