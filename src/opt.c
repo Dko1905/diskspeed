@@ -155,8 +155,14 @@ int parse_and_run(int argc, char* argv[]){
 		LOG("Read test done\n");
 	}
 	cr = close(fd);
-	LOG("Closed %s\n", output_filename);
 	ERR_CHECK(cr < 0, "Failed to close %s", output_filename);
+	LOG("Closed %s\n", output_filename);
+
+	if(delete_flag){
+		int rr = remove(output_filename);
+		ERR_CHECK(rr < 0, "Failed to delete %s", output_filename);
+		LOG("Deleted %s\n", output_filename);
+	}
 
 	double total_data_written = (double)chunk_size * (double)chunk_amount;
 	if(write_flag){
@@ -287,8 +293,14 @@ int parse_and_run(int argc, char* argv[]){
 		LOG("Read test done\n");
 	}
 	cr = close(fd);
-	LOG("Closed %s\n", output_filename);
 	ERR_CHECK(cr < 0, "Failed to close %s", output_filename);
+	LOG("Closed %s\n", output_filename);
+
+	if(delete_flag){
+		int rr = remove(output_filename);
+		ERR_CHECK(rr < 0, "Failed to delete %s", output_filename);
+		LOG("Deleted %s\n", output_filename);
+	}
 
 	double total_data_written = (double)chunk_size * (double)chunk_amount;
 	if(write_flag){
