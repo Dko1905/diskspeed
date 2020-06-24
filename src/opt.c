@@ -76,7 +76,7 @@ int parse_and_run(int argc, char* argv[]){
 	ERR_CHECK(output_filename == NULL, "Failed to alocate buffers for output_filename\n");
 
 	while(
-		(opt = getopt_long(argc, argv, "vwrdo:b:n", long_options, &long_index)) != -1
+		(opt = getopt_long(argc, argv, "vwrdo:b:hn", long_options, &long_index)) != -1
 	){
 		switch(opt){
 			case 'v':
@@ -208,7 +208,7 @@ int parse_and_run(int argc, char* argv[]){
 	ERR_CHECK(output_filename == NULL, "Failed to alocate buffers for output_filename\n");
 
 	while(
-		(option = getopt(argc, argv, "vwrdo:b:n")) != -1
+		(option = getopt(argc, argv, "vwrdo:b:hn")) != -1
 	){
 		switch(option){
 			case 'v':
