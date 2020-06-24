@@ -1,4 +1,4 @@
-#include <unistd.h> // For something //TODO check this
+#include <unistd.h> // Needed for close and lseek
 #include <stdio.h> // printf
 #include <stdlib.h> // Standard things
 #include <getopt.h> // For getopt and if gnu also getopt_long
@@ -37,7 +37,7 @@ void print_usage();
 
 
 #ifdef __gnu_linux__
-#define __USE_GNU //TODO check this
+#define __USE_GNU
 
 #include <fcntl.h> // For open() 
 #include <sys/stat.h> // For file permissions
@@ -121,10 +121,6 @@ int parse_and_run(int argc, char* argv[]){
 		read_flag = 1;
 		write_flag = 1;
 	}
-
-	/*
-	TODO Setup opening file and read/write tests
-	*/
 
 	// File open section
 	int fd2 = creat(output_filename, O_EXCL | S_IRUSR | S_IWUSR);
