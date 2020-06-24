@@ -72,7 +72,7 @@ int parse_and_run(int argc, char* argv[]){
 	int random_flag = 1;
 
 	char* output_filename = malloc(STRMAX);
-	output_filename[STRMAX] = '\0'; // For security reasons
+	output_filename[STRMAX-1] = '\0'; // For security reasons
 	ERR_CHECK(output_filename == NULL, "Failed to alocate buffers for output_filename\n");
 
 	while(
@@ -93,7 +93,7 @@ int parse_and_run(int argc, char* argv[]){
 				break;
 			case 'o':
 				strncpy(output_filename, optarg, STRMAX-1);
-				output_filename[STRMAX] = '\0'; //TODO check if I need to manually null terminate this string
+				output_filename[STRMAX-1] = '\0'; .. For security reasons
 				break;
 			case 'b': ; // Fix bad c standard
 				int sr = sscanf(optarg, "%llu:%llu", &chunk_size, &chunk_amount);
