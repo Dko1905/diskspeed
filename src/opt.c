@@ -96,7 +96,7 @@ int parse_and_run(int argc, char* argv[]){
 				output_filename[STRMAX-1] = '\0'; // For security reasons
 				break;
 			case 'b': ; // Fix bad c standard
-				int sr = sscanf(optarg, "%llu:%llu", &chunk_size, &chunk_amount);
+				int sr = sscanf(optarg, "%lu:%lu", &chunk_size, &chunk_amount);
 				ERR_CHECK(sr < 2, "sscanf failed\n");
 				break;
 			case 'h':
@@ -112,7 +112,7 @@ int parse_and_run(int argc, char* argv[]){
 		}
 	}
 
-	if(chunk_amount < 0 || chunk_size < 0){
+	if(chunk_amount < 1 || chunk_size < 1){
 		ERR("Invalid usage\n");
 		print_usage();
 		return 1;
@@ -267,7 +267,7 @@ int parse_and_run(int argc, char* argv[]){
 			LOG("Created file successfully\n");
 		}
 		else{
-			ERR_CHECK(1==1, "Failed to create file");
+			ERR_CHECK(1, "Failed to create file");
 		}
 	}
 	int cr = close(fd2);
