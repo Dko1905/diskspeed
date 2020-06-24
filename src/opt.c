@@ -93,7 +93,7 @@ int parse_and_run(int argc, char* argv[]){
 				break;
 			case 'o':
 				strncpy(output_filename, optarg, STRMAX-1);
-				output_filename[STRMAX-1] = '\0'; .. For security reasons
+				output_filename[STRMAX-1] = '\0'; // For security reasons
 				break;
 			case 'b': ; // Fix bad c standard
 				int sr = sscanf(optarg, "%llu:%llu", &chunk_size, &chunk_amount);
