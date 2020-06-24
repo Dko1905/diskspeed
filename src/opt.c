@@ -334,4 +334,5 @@ void print_usage(){
 	printf("-b --byte\n\tSpecifies the chunk size and the amount <chunk size, chunk amount>, for example 1000:10.\n");
 	printf("-h --delete\n\tPrints this help message.\n");
 	printf("-n --no-random\n\tDo not fill chunk with random data.\n");
+	printf("\nDisclaimer: The long parameter verison only works on gnu-linux\nLicense:\tMIT\n");
 }
