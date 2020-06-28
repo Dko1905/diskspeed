@@ -5,9 +5,5 @@
 
 A simple utility to test read/write speeds with minimal cache, the program uses POSIX to open, read and write files.
 
-## Todo
--   [ ] Write option parser
--   [ ] Write documentation
--   [ ] Create snap package
 ## License
 MIT
